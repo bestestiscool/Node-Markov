@@ -18,13 +18,40 @@ class MarkovMachine {
 
   makeChains() {
     // TODO
-  }
+    let chains = {}
+    for(let i = 0; i < this.words.length; i++) {
+      let word = this.words[i]
+      let nextWord = this.words[i + 1] || null
 
+      if (!chains[word]) {
+        chains[word] = [];
+      }
+
+      chains[word].push(nextWord)
+      
+    }
+    this.chains = chains
+  }
+  
 
   /** return random text from chains */
 
   makeText(numWords = 100) {
     // TODO
+    let keys = Object.keys(this.chains);
+    let key = this._getRandomElement(keys);
+    let text = [];
+
+    while (text.length < numWords && key !== null) {
+      text.push(key);
+      key = this._getRandomElement(this.chains[key]);
+    }
+
+    return text.join(" ");
+  }
+  /** get a random element from an array */
+  _getRandomElement(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
 }
 
